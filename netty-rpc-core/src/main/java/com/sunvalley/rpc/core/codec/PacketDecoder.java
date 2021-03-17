@@ -1,11 +1,11 @@
-package com.sunvalley.rpc.server.codec;
+package com.sunvalley.rpc.core.codec;
 
-import com.sunvalley.rpc.server.utils.ObjectUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import java.util.List;
+import com.sunvalley.rpc.core.utils.CodecUtils;
 
 /**
  * <B>说明：</B><BR>
@@ -41,7 +41,7 @@ public class PacketDecoder extends ByteToMessageDecoder {
 
         try {
             byte[] body = byteBuf.array();
-            Object message = ObjectUtils.bytesToObject(body);
+            Object message = CodecUtils.bytesToObject(body);
             out.add(message);
         } catch (Exception e) {
             System.out.println(ctx.channel().remoteAddress() + ",decode failed." + e.getMessage());

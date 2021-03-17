@@ -1,7 +1,7 @@
-package com.sunvalley.rpc.server.codec;
+package com.sunvalley.rpc.core.codec;
 
 
-import com.sunvalley.rpc.server.utils.ObjectUtils;
+import com.sunvalley.rpc.core.utils.CodecUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -20,7 +20,7 @@ public class PacketEncoder extends MessageToByteEncoder<Object> {
     @Override
     protected void encode(ChannelHandlerContext ctx, Object message, ByteBuf out) throws Exception {
         // 将对象转换为byte
-        byte[] bytes = ObjectUtils.objectToBytes(message);
+        byte[] bytes = CodecUtils.objectToBytes(message);
         int length = bytes.length;
         ByteBuf buf = Unpooled.buffer(8 + length);
         buf.writeInt(length);

@@ -1,4 +1,4 @@
-package com.sunvalley.rpc.server.utils;
+package com.sunvalley.rpc.core.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,7 +16,7 @@ import lombok.experimental.UtilityClass;
  */
 
 @UtilityClass
-public class ObjectUtils {
+public class CodecUtils {
 
     /**
      * 对象转字节数组
