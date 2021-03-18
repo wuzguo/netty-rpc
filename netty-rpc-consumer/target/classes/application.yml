@@ -1,0 +1,10 @@
+server:
+  port: 8800
+
+rpc:
+  server:
+    hostname: 127.0.0.1
+    port: 6668
+  registry:
+    type: ZOOKEEPER
+    addr: 127.0.0.1:2181
