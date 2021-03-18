@@ -19,17 +19,17 @@ netty-rpc-proxy: Java代理功能学习模块。
 
 1. 服务端直接运行 netty-rpc-server 根目录下的 ServerApplication 启动类。
 
-![](.\images\0.png)
+![](images/0.png)
 
 1. 客户端直接运行 netty-rpc-consumer 根目录下的 ConsumerApplication 启动类。
 
-![](.\images\1.png)
+![](images/1.png)
 
 ## 接口调用
 
 客户端和服务器都启动成功后，可以在浏览器中访问Swagger接口。http://localhost:8800/swagger-ui/ 进行接口测试。
 
-![](.\images\2.png)
+![](images/2.png)
 
 ## 参考项目
 
