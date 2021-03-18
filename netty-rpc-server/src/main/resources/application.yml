@@ -1,5 +1,6 @@
 rpc:
   server:
+    hostname: 127.0.0.1
     port: 6668
   registry:
     type: ZOOKEEPER

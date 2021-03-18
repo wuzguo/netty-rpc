@@ -1,9 +1,6 @@
 package com.sunvalley.rpc.core.properties;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,13 +17,20 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "rpc")
 public class Properties {
 
-    @Value("${rpc.server.port}")
-    private Integer serverPort;
+    private Server server;
 
     private Registry registry;
 
-    @Getter
-    @Setter
+    @Data
+    public static class Server {
+
+        private String hostname;
+
+        private Integer port;
+
+    }
+
+    @Data
     public static class Registry {
 
         private String type;

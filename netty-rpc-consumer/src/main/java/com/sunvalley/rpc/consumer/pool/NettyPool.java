@@ -142,7 +142,7 @@ public class NettyPool {
      *
      * @param message {@link Object}
      */
-    public void sendMessage(@NonNull RpcRequest message) {
+    public void sendRequest(@NonNull RpcRequest message) {
         this.send(String.format("%s:%s", this.hostName, this.port), message);
     }
 
@@ -150,9 +150,11 @@ public class NettyPool {
     /**
      * 获取连接池
      *
+     * @param hostName 主机地址
+     * @param port     端口号
      * @return {@link NettyPool}
      */
-    public static NettyPool getPool() {
-        return new NettyPool("172.27.153.161", 6668);
+    public static NettyPool getPool(String hostName, Integer port) {
+        return new NettyPool(hostName, port);
     }
 }

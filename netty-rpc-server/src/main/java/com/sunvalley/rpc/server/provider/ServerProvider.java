@@ -8,7 +8,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -27,7 +26,7 @@ public class ServerProvider implements InitializingBean {
     /**
      * 服务地址
      */
-    private String addr;
+    private final String hostname;
 
     /**
      * 端口号
@@ -35,7 +34,8 @@ public class ServerProvider implements InitializingBean {
     private final Integer port;
 
 
-    public ServerProvider(Integer port) {
+    public ServerProvider(String hostname, Integer port) {
+        this.hostname = hostname;
         this.port = port;
     }
 
@@ -43,17 +43,15 @@ public class ServerProvider implements InitializingBean {
         NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
         NioEventLoopGroup workerGroup = new NioEventLoopGroup(8);
 
-        this.addr = InetAddress.getLocalHost().getHostAddress();
-
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
                 .childHandler(new ServerChannelInitializer()).option(ChannelOption.SO_BACKLOG, 128)
                 .childOption(ChannelOption.SO_KEEPALIVE, true).handler(new LoggingHandler(LogLevel.DEBUG));
-            ChannelFuture channelFuture = bootstrap.bind(new InetSocketAddress(this.addr, this.port)).sync();
+            ChannelFuture channelFuture = bootstrap.bind(new InetSocketAddress(this.hostname, this.port)).sync();
             channelFuture.addListener(future -> {
                 if (future.isSuccess()) {
-                    System.out.println(String.format("服务启动成功，地址 %s, 端口号 %s", this.addr, this.port));
+                    System.out.println(String.format("服务启动成功，地址 %s, 端口号 %s", this.hostname, this.port));
                 }
             });
             channelFuture.channel().closeFuture().sync();

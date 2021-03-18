@@ -10,6 +10,7 @@ import io.netty.util.concurrent.Promise;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,7 +25,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class HelloServiceImpl implements IHelloService {
 
-    private static final NettyPool NETTY_POOL = NettyPool.getPool();
+    @Autowired
+    private NettyPool nettyPool;
 
     @Override
     public String greet(String name) {
@@ -35,7 +37,7 @@ public class HelloServiceImpl implements IHelloService {
         try {
             Promise<RpcResponse> promise = new DefaultPromise<>(new DefaultEventLoop());
             RequestHolder.put(request.getRequestId(), promise);
-            NETTY_POOL.sendMessage(request);
+            nettyPool.sendRequest(request);
             return Optional.ofNullable(promise.get()).map(RpcResponse::getValue).map(String::valueOf).orElse(null);
         } catch (InterruptedException | ExecutionException e) {
             log.error("hello service greet occurred exception: {}", e.getMessage());

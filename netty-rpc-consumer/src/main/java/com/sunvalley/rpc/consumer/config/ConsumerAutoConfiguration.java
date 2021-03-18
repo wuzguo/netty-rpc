@@ -1,7 +1,7 @@
-package com.sunvalley.rpc.server.config;
+package com.sunvalley.rpc.consumer.config;
 
+import com.sunvalley.rpc.consumer.pool.NettyPool;
 import com.sunvalley.rpc.core.properties.Properties;
-import com.sunvalley.rpc.server.provider.ServerProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -12,18 +12,18 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author zak.wu
  * @version 1.0.0
- * @date 2021/3/17 16:43
+ * @date 2021/3/18 13:44
  */
 
 @Configuration
 @EnableConfigurationProperties(Properties.class)
-public class ServerAutoConfiguration {
+public class ConsumerAutoConfiguration {
 
     @Autowired
     private Properties properties;
 
     @Bean
-    public ServerProvider serverProvider() {
-        return new ServerProvider(properties.getServer().getHostname(), properties.getServer().getPort());
+    public NettyPool nettyPool() {
+        return NettyPool.getPool(properties.getServer().getHostname(), properties.getServer().getPort());
     }
 }

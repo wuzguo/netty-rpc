@@ -1,6 +1,8 @@
 package com.sunvalley.rpc.consumer.config;
 
+import com.sunvalley.rpc.core.properties.Properties;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
