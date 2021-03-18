@@ -1,6 +1,5 @@
 package com.sunvalley.rpc.consumer.handler;
 
-import com.sunvalley.rpc.consumer.service.RequestHolder;
 import com.sunvalley.rpc.core.domain.RpcResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

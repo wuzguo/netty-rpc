@@ -1,6 +1,6 @@
 package com.sunvalley.rpc.facade.service;
 
-import com.sunvalley.rpc.facade.vo.UserBo;
+import com.sunvalley.rpc.facade.vo.UserVo;
 
 /**
  * <B>说明：</B><BR>
@@ -16,7 +16,7 @@ public interface IUserService {
      * 查询用户信息
      *
      * @param id 用户ID
-     * @return {@link UserBo}
+     * @return {@link UserVo}
      */
-    UserBo find(Long id);
+    UserVo find(Long id);
 }

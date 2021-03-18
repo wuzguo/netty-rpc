@@ -1,13 +1,12 @@
 package com.sunvalley.rpc.consumer.controller;
 
-import com.sunvalley.rpc.consumer.vo.ReqGreetVo;
+import com.sunvalley.rpc.core.annotation.RpcReference;
 import com.sunvalley.rpc.facade.service.IHelloService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -23,12 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/hello")
 public class HelloController {
 
-    @Autowired
+    @RpcReference
     private IHelloService helloService;
 
     @ApiOperation("问候语")
     @PostMapping("/greet")
-    public String greet(@RequestBody ReqGreetVo greetVo) {
-        return helloService.greet(greetVo.getName());
+    public String greet(@RequestParam String name) {
+        return helloService.greet(name);
     }
 }

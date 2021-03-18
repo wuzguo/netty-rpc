@@ -1,4 +1,4 @@
-package com.sunvalley.rpc.consumer.service;
+package com.sunvalley.rpc.consumer.handler;
 
 import com.google.common.collect.Maps;
 import com.sunvalley.rpc.core.domain.RpcResponse;
