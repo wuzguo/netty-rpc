@@ -13,12 +13,12 @@ import lombok.experimental.UtilityClass;
  */
 
 @UtilityClass
-public class ServiceUtils {
+public class BeanUtils {
 
     /**
      * 记录当前服务中的接口对象
      */
-    private static final Map<String, Map<String, Object>> mapServices = Maps.newConcurrentMap();
+    private static final Map<String, Map<String, Object>> mapBeans = Maps.newConcurrentMap();
 
     /**
      * 添加Bean
@@ -28,8 +28,9 @@ public class ServiceUtils {
      * @param bean        实例
      */
     public void put(String serviceName, String version, Object bean) {
-        Map<String, Object> mapVersions = mapServices.getOrDefault(serviceName, Maps.newConcurrentMap());
+        Map<String, Object> mapVersions = mapBeans.getOrDefault(serviceName, Maps.newConcurrentMap());
         mapVersions.putIfAbsent(version, bean);
+        mapBeans.put(serviceName, mapVersions);
     }
 
     /**
@@ -40,7 +41,7 @@ public class ServiceUtils {
      * @return {@link Object}
      */
     public Object get(String serviceName, String version) {
-        return mapServices.getOrDefault(serviceName, Maps.newConcurrentMap()).get(version);
+        return mapBeans.getOrDefault(serviceName, Maps.newConcurrentMap()).get(version);
     }
 
 }

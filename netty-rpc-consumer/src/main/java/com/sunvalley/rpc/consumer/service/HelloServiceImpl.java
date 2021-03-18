@@ -29,7 +29,7 @@ public class HelloServiceImpl implements IHelloService {
     @Override
     public String greet(String name) {
         RpcRequest request = RpcRequest.builder().requestId(RequestHolder.idGen())
-            .className(IHelloService.class.getName()).methodName("greet").params(new Object[]{name})
+            .className(IHelloService.class.getName()).methodName("greet").params(new Object[]{name}).version("1.0.0")
             .paramTypes(new Class[]{String.class}).build();
 
         try {

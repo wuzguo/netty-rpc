@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableConfigurationProperties(Properties.class)
-public class AutoConfiguration {
+public class ServerAutoConfiguration {
 
     @Autowired
     private Properties properties;

@@ -1,7 +1,6 @@
 package com.sunvalley.rpc.server.provider;
 
-import com.sunvalley.rpc.core.annotation.RpcService;
-import com.sunvalley.rpc.server.utils.ServiceUtils;
+import com.sunvalley.rpc.server.handler.ServerChannelInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -11,11 +10,8 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /**
  * <B>说明：</B><BR>
@@ -26,7 +22,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
  */
 
 @Slf4j
-public class ServerProvider implements InitializingBean, BeanPostProcessor {
+public class ServerProvider implements InitializingBean {
 
     /**
      * 服务地址
@@ -70,12 +66,5 @@ public class ServerProvider implements InitializingBean, BeanPostProcessor {
     @Override
     public void afterPropertiesSet() throws Exception {
         startServer();
-    }
-
-    @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        Optional.ofNullable(bean.getClass().getAnnotation(RpcService.class))
-            .ifPresent(rpcService -> ServiceUtils.put(rpcService.facade().getName(), rpcService.version(), bean));
-        return bean;
     }
 }

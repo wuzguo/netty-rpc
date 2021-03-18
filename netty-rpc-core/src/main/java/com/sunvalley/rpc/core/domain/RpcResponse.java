@@ -1,7 +1,10 @@
 package com.sunvalley.rpc.core.domain;
 
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <B>说明：</B><BR>
@@ -12,6 +15,9 @@ import lombok.Data;
  */
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RpcResponse implements Serializable {
 
     /**

@@ -13,7 +13,7 @@ import com.sunvalley.rpc.facade.vo.UserBo;
  * @date 2021/3/17 14:12
  */
 
-@RpcService(facade = IHelloService.class)
+@RpcService(facade = IUserService.class)
 public class UserServiceImpl implements IUserService {
 
     @Override

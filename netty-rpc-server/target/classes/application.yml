@@ -1,9 +1,0 @@
-rpc:
-  server:
-    port: 6668
-  registry:
-    type: ZOOKEEPER
-    addr: 127.0.0.1:2181
-
-logging:
-  config: classpath:log4j2.xml

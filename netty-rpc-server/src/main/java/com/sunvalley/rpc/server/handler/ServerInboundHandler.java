@@ -1,7 +1,8 @@
 package com.sunvalley.rpc.server.handler;
 
 import com.sunvalley.rpc.core.domain.RpcRequest;
-import com.sunvalley.rpc.server.utils.ServiceUtils;
+import com.sunvalley.rpc.core.domain.RpcResponse;
+import com.sunvalley.rpc.server.utils.BeanUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import java.util.Objects;
@@ -25,20 +26,22 @@ public class ServerInboundHandler extends SimpleChannelInboundHandler<RpcRequest
 
     /**
      * 反射调用方法
+     *
      * @param request 请求参数
      * @return {@link Object} 方法返回值
      * @throws Exception 异常
      */
-    private Object handle(RpcRequest request) throws Exception {
+    private RpcResponse handle(RpcRequest request) throws Exception {
         // 获取类名
-        Object serviceBean = ServiceUtils.get(request.getClassName(), request.getVersion());
+        Object serviceBean = BeanUtils.get(request.getClassName(), request.getVersion());
         if (serviceBean == null) {
             throw new RuntimeException(String.format("service %s not exist", request.getClassName()));
         }
 
         // 反射调用
-        return ReflectionUtils.invokeMethod(Objects.requireNonNull(
+        Object value = ReflectionUtils.invokeMethod(Objects.requireNonNull(
             ReflectionUtils.findMethod(serviceBean.getClass(), request.getMethodName(), request.getParamTypes())),
             serviceBean, request.getParams());
+        return RpcResponse.builder().value(value).requestId(request.getRequestId()).build();
     }
 }
