@@ -1,5 +1,7 @@
 package com.sunvalley.rpc.consumer.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -11,10 +13,12 @@ import lombok.Data;
  */
 
 @Data
+@ApiModel("问候请求对象")
 public class ReqGreetVo {
 
     /**
      * 名称
      */
+    @ApiModelProperty("名称")
     private String name;
 }

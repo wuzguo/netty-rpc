@@ -4,6 +4,9 @@ import com.sunvalley.rpc.consumer.pool.NettyPool;
 import com.sunvalley.rpc.core.domain.RpcRequest;
 import com.sunvalley.rpc.core.domain.RpcResponse;
 import com.sunvalley.rpc.facade.service.IHelloService;
+import io.netty.channel.DefaultEventLoop;
+import io.netty.util.concurrent.DefaultPromise;
+import io.netty.util.concurrent.Promise;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +31,12 @@ public class HelloServiceImpl implements IHelloService {
         RpcRequest request = RpcRequest.builder().requestId(RequestHolder.idGen())
             .className(IHelloService.class.getName()).methodName("greet").params(new Object[]{name})
             .paramTypes(new Class[]{String.class}).build();
-        NETTY_POOL.sendMessage(request);
 
         try {
-            return Optional.ofNullable(RequestHolder.remove(request.getRequestId()).get()).map(RpcResponse::getValue)
-                .map(String::valueOf).orElse(null);
+            Promise<RpcResponse> promise = new DefaultPromise<>(new DefaultEventLoop());
+            RequestHolder.put(request.getRequestId(), promise);
+            NETTY_POOL.sendMessage(request);
+            return Optional.ofNullable(promise.get()).map(RpcResponse::getValue).map(String::valueOf).orElse(null);
         } catch (InterruptedException | ExecutionException e) {
             log.error("hello service greet occurred exception: {}", e.getMessage());
         }

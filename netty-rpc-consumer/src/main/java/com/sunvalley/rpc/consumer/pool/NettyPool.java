@@ -1,28 +1,20 @@
 package com.sunvalley.rpc.consumer.pool;
 
-import com.google.common.collect.Lists;
 import com.sunvalley.rpc.consumer.handler.ClientInboundHandler;
 import com.sunvalley.rpc.consumer.handler.ExceptionHandler;
-import com.sunvalley.rpc.consumer.service.RequestHolder;
 import com.sunvalley.rpc.core.codec.PacketDecoder;
 import com.sunvalley.rpc.core.codec.PacketEncoder;
 import com.sunvalley.rpc.core.domain.RpcRequest;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelPipeline;
-import io.netty.channel.DefaultEventLoop;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.pool.AbstractChannelPoolMap;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.channel.pool.ChannelPoolMap;
 import io.netty.channel.pool.FixedChannelPool;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.concurrent.DefaultPromise;
 import io.netty.util.concurrent.FutureListener;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -67,16 +59,8 @@ public class NettyPool {
     }
 
     private void initialize() {
-        Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(new NioEventLoopGroup()).channel(NioSocketChannel.class)
-            .remoteAddress(this.hostName, this.port);
-        List<ChannelHandler> channelHandlers = Lists.newArrayList();
-        // 各种Handler
-        channelHandlers.add(new PacketDecoder());
-        channelHandlers.add(new PacketEncoder());
-        channelHandlers.add(new ExceptionHandler());
-        channelHandlers.add(new ClientInboundHandler());
-        create0(bootstrap, channelHandlers);
+        create0(new Bootstrap().group(new NioEventLoopGroup()).channel(NioSocketChannel.class)
+            .remoteAddress(this.hostName, this.port));
     }
 
     /**
@@ -84,7 +68,7 @@ public class NettyPool {
      *
      * @param bootstrap {@link Bootstrap}
      */
-    private void create0(@NonNull Bootstrap bootstrap, Collection<ChannelHandler> channelHandlers) {
+    private void create0(@NonNull Bootstrap bootstrap) {
         mapChannelPools = new AbstractChannelPoolMap<String, FixedChannelPool>() {
             @Override
             protected FixedChannelPool newPool(String key) {
@@ -106,7 +90,10 @@ public class NettyPool {
                     @Override
                     public void channelCreated(Channel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        Optional.ofNullable(channelHandlers).orElse(Collections.emptyList()).forEach(pipeline::addLast);
+                        pipeline.addLast("decoder", new PacketDecoder());
+                        pipeline.addLast("encoder", new PacketEncoder());
+                        pipeline.addLast("exceptionHandler", new ExceptionHandler());
+                        pipeline.addLast("clientInboundHandler", new ClientInboundHandler());
                     }
 
                     /**
@@ -137,12 +124,16 @@ public class NettyPool {
         FixedChannelPool pool = mapChannelPools.get(key);
         // 申请连接，没有申请到或者网络断开，返回null
         pool.acquire().addListener((FutureListener<Channel>) future -> {
+            if (!future.isSuccess()) {
+                log.error("没有申请到连接，请检查配置信息和网络");
+                return;
+            }
             //给服务端发送数据
-            Channel channel = future.getNow();
-            channel.writeAndFlush(message);
-            RequestHolder.put(message.getRequestId(), new DefaultPromise<>(new DefaultEventLoop()));
-            // 连接放回连接池，这里一定记得放回去
-            pool.release(channel);
+            Optional.ofNullable(future.getNow()).ifPresent(channel -> {
+                channel.writeAndFlush(message);
+                // 连接放回连接池，这里一定记得放回去
+                pool.release(channel);
+            });
         });
     }
 
@@ -162,6 +153,6 @@ public class NettyPool {
      * @return {@link NettyPool}
      */
     public static NettyPool getPool() {
-        return new NettyPool("localhost", 6668);
+        return new NettyPool("127.0.0.1", 6668);
     }
 }

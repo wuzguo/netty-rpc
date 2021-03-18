@@ -22,6 +22,10 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.sunvalley.rpc</groupId>
             <artifactId>netty-rpc-core</artifactId>
             <version>1.0-SNAPSHOT</version>
