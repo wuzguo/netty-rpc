@@ -19,4 +19,12 @@ public interface IUserService {
      * @return {@link UserVo}
      */
     UserVo find(Long id);
+
+
+    /**
+     * 保存用户信息
+     *
+     * @param userVo {@link UserVo}
+     */
+    void add(UserVo userVo);
 }

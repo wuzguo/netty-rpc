@@ -58,7 +58,7 @@ public class InvokerProxy implements InvocationHandler {
             Promise<RpcResponse> promise = new DefaultPromise<>(new DefaultEventLoop());
             RequestHolder.put(request.getRequestId(), promise);
             nettyPool.sendRequest(request);
-            return Optional.ofNullable(promise.get()).map(RpcResponse::getValue).map(String::valueOf).orElse(null);
+            return Optional.ofNullable(promise.get()).map(RpcResponse::getValue).orElse(null);
         } catch (InterruptedException | ExecutionException e) {
             log.error("hello service greet occurred exception: {}", e.getMessage());
         }
