@@ -1,8 +1,11 @@
 package com.sunvalley.rpc.consumer.handler;
 
-import com.sunvalley.rpc.core.domain.RpcRequest;
+import com.sunvalley.rpc.consumer.service.RequestHolder;
+import com.sunvalley.rpc.core.domain.RpcResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.util.concurrent.Promise;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <B>说明：</B><BR>
@@ -12,10 +15,14 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @date 2021/3/17 18:12
  */
 
-public class ClientInboundHandler extends SimpleChannelInboundHandler<RpcRequest> {
+@Slf4j
+public class ClientInboundHandler extends SimpleChannelInboundHandler<RpcResponse> {
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, RpcRequest msg) throws Exception {
-
+    protected void channelRead0(ChannelHandlerContext ctx, RpcResponse response) throws Exception {
+        log.info("channel: {}, response: {}", ctx.channel(), response);
+        long requestId = response.getRequestId();
+        Promise<RpcResponse> future = RequestHolder.remove(requestId);
+        future.setSuccess(response);
     }
 }

@@ -1,6 +1,10 @@
 package com.sunvalley.rpc.core.domain;
 
+import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <B>说明：</B><BR>
@@ -10,8 +14,17 @@ import lombok.Data;
  * @date 2021/3/17 14:31
  */
 
+
 @Data
-public class RpcRequest {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class RpcRequest implements Serializable {
+
+    /**
+     * 请求ID
+     */
+    private Long requestId;
 
     /**
      * 服务名称

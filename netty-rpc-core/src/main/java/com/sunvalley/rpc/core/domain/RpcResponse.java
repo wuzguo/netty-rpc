@@ -1,5 +1,6 @@
 package com.sunvalley.rpc.core.domain;
 
+import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -11,6 +12,15 @@ import lombok.Data;
  */
 
 @Data
-public class RpcResponse {
+public class RpcResponse implements Serializable {
 
+    /**
+     * 请求ID
+     */
+    private Long requestId;
+
+    /**
+     * 返回值
+     */
+    private Object value;
 }

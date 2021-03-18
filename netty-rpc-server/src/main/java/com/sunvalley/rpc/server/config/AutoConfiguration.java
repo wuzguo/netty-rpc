@@ -1,6 +1,6 @@
 package com.sunvalley.rpc.server.config;
 
-import com.sunvalley.rpc.core.common.Properties;
+import com.sunvalley.rpc.core.properties.Properties;
 import com.sunvalley.rpc.server.provider.ServerProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

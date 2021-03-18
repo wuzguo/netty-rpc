@@ -3,18 +3,22 @@ package com.sunvalley.rpc.consumer.pool;
 import com.google.common.collect.Lists;
 import com.sunvalley.rpc.consumer.handler.ClientInboundHandler;
 import com.sunvalley.rpc.consumer.handler.ExceptionHandler;
+import com.sunvalley.rpc.consumer.service.RequestHolder;
 import com.sunvalley.rpc.core.codec.PacketDecoder;
 import com.sunvalley.rpc.core.codec.PacketEncoder;
+import com.sunvalley.rpc.core.domain.RpcRequest;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelPipeline;
+import io.netty.channel.DefaultEventLoop;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.pool.AbstractChannelPoolMap;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.channel.pool.ChannelPoolMap;
 import io.netty.channel.pool.FixedChannelPool;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.concurrent.DefaultPromise;
 import io.netty.util.concurrent.FutureListener;
 import java.util.Collection;
 import java.util.Collections;
@@ -128,7 +132,7 @@ public class NettyPool {
      * @param key     Pool Key
      * @param message 消息
      */
-    private void send(@NonNull String key, @NonNull Object message) {
+    private void send(@NonNull String key, @NonNull RpcRequest message) {
         // 从连接池中获取连接
         FixedChannelPool pool = mapChannelPools.get(key);
         // 申请连接，没有申请到或者网络断开，返回null
@@ -136,6 +140,7 @@ public class NettyPool {
             //给服务端发送数据
             Channel channel = future.getNow();
             channel.writeAndFlush(message);
+            RequestHolder.put(message.getRequestId(), new DefaultPromise<>(new DefaultEventLoop()));
             // 连接放回连接池，这里一定记得放回去
             pool.release(channel);
         });
@@ -146,7 +151,7 @@ public class NettyPool {
      *
      * @param message {@link Object}
      */
-    public void sendMessage(@NonNull Object message) {
+    public void sendMessage(@NonNull RpcRequest message) {
         this.send(String.format("%s:%s", this.hostName, this.port), message);
     }
 

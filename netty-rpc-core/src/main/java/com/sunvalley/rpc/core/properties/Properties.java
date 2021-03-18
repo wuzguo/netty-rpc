@@ -1,4 +1,4 @@
-package com.sunvalley.rpc.core.common;
+package com.sunvalley.rpc.core.properties;
 
 import lombok.Data;
 import lombok.Getter;
