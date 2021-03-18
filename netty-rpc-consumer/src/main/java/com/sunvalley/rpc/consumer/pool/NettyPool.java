@@ -55,12 +55,17 @@ public class NettyPool {
     private NettyPool(String hostName, Integer port) {
         this.hostName = hostName;
         this.port = port;
-        initialize();
     }
 
-    private void initialize() {
+    /**
+     * 初始化
+     *
+     * @return {@link NettyPool}
+     */
+    private NettyPool initialize() {
         create0(new Bootstrap().group(new NioEventLoopGroup()).channel(NioSocketChannel.class)
             .remoteAddress(this.hostName, this.port));
+        return this;
     }
 
     /**
@@ -119,7 +124,7 @@ public class NettyPool {
      * @param key     Pool Key
      * @param message 消息
      */
-    private void send(@NonNull String key, @NonNull RpcRequest message) {
+    private void sendRequest(@NonNull String key, @NonNull RpcRequest message) {
         // 从连接池中获取连接
         FixedChannelPool pool = mapChannelPools.get(key);
         // 申请连接，没有申请到或者网络断开，返回null
@@ -143,7 +148,7 @@ public class NettyPool {
      * @param message {@link Object}
      */
     public void sendRequest(@NonNull RpcRequest message) {
-        this.send(String.format("%s:%s", this.hostName, this.port), message);
+        this.sendRequest(String.format("%s:%s", this.hostName, this.port), message);
     }
 
 
@@ -155,6 +160,6 @@ public class NettyPool {
      * @return {@link NettyPool}
      */
     public static NettyPool getPool(String hostName, Integer port) {
-        return new NettyPool(hostName, port);
+        return new NettyPool(hostName, port).initialize();
     }
 }
