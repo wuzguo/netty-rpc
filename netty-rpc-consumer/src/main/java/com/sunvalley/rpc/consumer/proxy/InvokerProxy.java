@@ -1,7 +1,7 @@
 package com.sunvalley.rpc.consumer.proxy;
 
-import com.sunvalley.rpc.consumer.pool.NettyPool;
 import com.sunvalley.rpc.consumer.handler.RequestHolder;
+import com.sunvalley.rpc.consumer.pool.NettyPool;
 import com.sunvalley.rpc.core.domain.RpcRequest;
 import com.sunvalley.rpc.core.domain.RpcResponse;
 import io.netty.channel.DefaultEventLoop;

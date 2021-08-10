@@ -1,16 +1,13 @@
 package com.sunvalley.rpc.consumer.proxy;
 
 import com.google.common.collect.Maps;
-import com.sunvalley.rpc.consumer.pool.NettyPool;
 import com.sunvalley.rpc.core.annotation.RpcReference;
-import com.sunvalley.rpc.core.properties.Properties;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -35,13 +32,9 @@ import org.springframework.util.ReflectionUtils;
 @Component
 public class ConsumerPostProcessor implements ApplicationContextAware, BeanClassLoaderAware, BeanFactoryPostProcessor {
 
-    private ApplicationContext context;
-
-    private ClassLoader classLoader;
-
-
     private final Map<String, BeanDefinition> refBeanDefinitions = Maps.newHashMap();
-
+    private ApplicationContext context;
+    private ClassLoader classLoader;
 
     @Override
     public void setBeanClassLoader(ClassLoader classLoader) {

@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <artifactId>netty-rpc-proxy</artifactId>
+
+    <dependencies>
+        <dependency>
+            <artifactId>cglib</artifactId>
+            <groupId>cglib</groupId>
+            <version>3.2.5</version>
+        </dependency>
+    </dependencies>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+
     <parent>
         <artifactId>netty-rpc</artifactId>
         <groupId>com.sunvalley.rpc</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>netty-rpc-proxy</artifactId>
-    <packaging>jar</packaging>
-
     <properties>
-        <skipSpringBootMain>true</skipSpringBootMain>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <skipSpringBootMain>true</skipSpringBootMain>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>3.2.5</version>
-        </dependency>
-    </dependencies>
 </project>

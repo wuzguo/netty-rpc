@@ -58,6 +58,17 @@ public class NettyPool {
     }
 
     /**
+     * 获取连接池
+     *
+     * @param hostName 主机地址
+     * @param port     端口号
+     * @return {@link NettyPool}
+     */
+    public static NettyPool getPool(String hostName, Integer port) {
+        return new NettyPool(hostName, port).initialize();
+    }
+
+    /**
      * 初始化
      *
      * @return {@link NettyPool}
@@ -149,17 +160,5 @@ public class NettyPool {
      */
     public void sendRequest(@NonNull RpcRequest message) {
         this.sendRequest(String.format("%s:%s", this.hostName, this.port), message);
-    }
-
-
-    /**
-     * 获取连接池
-     *
-     * @param hostName 主机地址
-     * @param port     端口号
-     * @return {@link NettyPool}
-     */
-    public static NettyPool getPool(String hostName, Integer port) {
-        return new NettyPool(hostName, port).initialize();
     }
 }

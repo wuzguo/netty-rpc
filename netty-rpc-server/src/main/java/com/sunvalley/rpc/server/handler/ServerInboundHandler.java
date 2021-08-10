@@ -40,7 +40,7 @@ public class ServerInboundHandler extends SimpleChannelInboundHandler<RpcRequest
 
         // 反射调用
         Object value = ReflectionUtils.invokeMethod(Objects.requireNonNull(
-            ReflectionUtils.findMethod(serviceBean.getClass(), request.getMethodName(), request.getParamTypes())),
+                ReflectionUtils.findMethod(serviceBean.getClass(), request.getMethodName(), request.getParamTypes())),
             serviceBean, request.getParams());
         return RpcResponse.builder().value(value).requestId(request.getRequestId()).build();
     }

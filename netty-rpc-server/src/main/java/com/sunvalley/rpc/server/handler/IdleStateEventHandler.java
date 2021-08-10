@@ -23,13 +23,13 @@ public class IdleStateEventHandler extends ChannelInboundHandlerAdapter {
             IdleStateEvent stateEvent = (IdleStateEvent) evt;
             switch (stateEvent.state()) {
                 case READER_IDLE:
-                    System.out.println(channel.remoteAddress() +" 读空闲。服务器作出相应处理");
+                    System.out.println(channel.remoteAddress() + " 读空闲。服务器作出相应处理");
                     break;
                 case WRITER_IDLE:
-                    System.out.println(channel.remoteAddress() +" 写空闲。服务器作出相应处理");
+                    System.out.println(channel.remoteAddress() + " 写空闲。服务器作出相应处理");
                     break;
                 case ALL_IDLE:
-                    System.out.println(channel.remoteAddress() +" 读写空闲。服务器作出相应处理");
+                    System.out.println(channel.remoteAddress() + " 读写空闲。服务器作出相应处理");
                     break;
                 default:
                     System.out.println("无效的状态，服务器不知道怎么做");
