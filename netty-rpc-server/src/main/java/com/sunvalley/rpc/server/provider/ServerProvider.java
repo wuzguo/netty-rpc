@@ -51,7 +51,7 @@ public class ServerProvider implements InitializingBean {
             ChannelFuture channelFuture = bootstrap.bind(new InetSocketAddress(this.hostname, this.port)).sync();
             channelFuture.addListener(future -> {
                 if (future.isSuccess()) {
-                    System.out.println(String.format("服务启动成功，地址 %s, 端口号 %s", this.hostname, this.port));
+                    System.out.printf("服务启动成功，地址 %s, 端口号 %s", this.hostname, this.port);
                 }
             });
             channelFuture.channel().closeFuture().sync();
